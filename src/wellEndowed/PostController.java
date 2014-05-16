@@ -9,8 +9,9 @@ public class PostController {
 	private HttpServletResponse response;
 	private Groupable members = ServiceLoader.members;
 	
-	public PostController(){
-		
+	public PostController(HttpServletRequest request, HttpServletResponse respnonse){
+		this.request = request;
+		this.response = response;
 	}
 
 }

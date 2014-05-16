@@ -9,8 +9,14 @@ public class GetController {
 	private HttpServletResponse response;
 	private Groupable members = ServiceLoader.members;
 	
-	public GetController(){
-		
+	public GetController(HttpServletRequest request, HttpServletResponse response){
+		this.request = request;
+		this.response = response;
+	}
+	
+	public ModelAndView newsfeed(){
+		ModelAndView nf = new ModelAndView(null, "/newsFeed.jsp");
+		return nf;
 	}
 
 }
