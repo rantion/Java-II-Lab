@@ -18,5 +18,25 @@ public class GetController {
 		ModelAndView nf = new ModelAndView(null, "/newsFeed.jsp");
 		return nf;
 	}
+	
+	public ModelAndView group(){
+		ModelAndView group = new ModelAndView(null, "/group.jsp");
+		return group;
+	}
+	
+	public ModelAndView groups(){
+		ModelAndView groups = new ModelAndView(null, "/groups.jsp");
+		return groups;
+	}
+	
+	public ModelAndView inbox(){
+		ModelAndView inbox = new ModelAndView(null, "/inbox.jsp");
+		return inbox;
+	}
+	
+	public ModelAndView profile(){
+		ModelAndView profile = new ModelAndView(null, "/profile.jsp");
+		return profile;
+	}
 
 }
