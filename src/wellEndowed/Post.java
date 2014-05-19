@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
-public class Post {
+public class Post implements Postable {
 	
 	private List<Post> reactions;
 	private List<Comment> comments;

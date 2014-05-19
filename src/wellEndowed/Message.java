@@ -3,7 +3,7 @@ package wellEndowed;
 import java.util.Calendar;
 import java.util.List;
 
-public class Message {
+public class Message implements Messageable {
 	
 	private User sender;
 	private List<User> receivers;

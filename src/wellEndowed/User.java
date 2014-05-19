@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.util.List;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Userable{
 	
 	private String firstName, lastName, bio, userName;
 	private Groupable followers, following;

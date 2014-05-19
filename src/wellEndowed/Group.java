@@ -1,6 +1,7 @@
 package wellEndowed;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 
 public class Group implements Groupable{
@@ -23,8 +24,8 @@ public class Group implements Groupable{
 	}
 
 		
-	public Groupable getGroup() {
-		return this;
+	public HashMap<String, User> getGroup() {
+		return members;
 	}
 
 	

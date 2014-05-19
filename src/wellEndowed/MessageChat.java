@@ -2,7 +2,7 @@ package wellEndowed;
 
 import java.util.List;
 
-public class MessageChat 
+public class MessageChat implements MessageChatable
 {
 	private List<User> chatUsers;
 	private List<Message> messages;
