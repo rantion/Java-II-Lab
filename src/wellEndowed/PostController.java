@@ -13,5 +13,10 @@ public class PostController {
 		this.request = request;
 		this.response = response;
 	}
+	
+	public ModelAndView newUser(){
+		
+		ModelAndView mav = new ModelAndView();
+	}
 
 }

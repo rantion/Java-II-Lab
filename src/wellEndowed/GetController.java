@@ -38,5 +38,10 @@ public class GetController {
 		ModelAndView profile = new ModelAndView(null, "/profile.jsp");
 		return profile;
 	}
+	
+	public ModelAndView login(){
+		ModelAndView login = new ModelAndView(null, "/index.jsp");
+		return login;
+	}
 
 }
