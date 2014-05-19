@@ -78,10 +78,15 @@ public class ServletMain extends HttpServlet {
 		else if(page.equals("login")){
 			ModelAndView mav = getController.login();
 			RequestDispatcher view = request.getRequestDispatcher(mav.getViewName());
+			view.forward(request, response);			
+		}
+		else if(page.equals("register"))
+		{
+			ModelAndView mav = getController.register();
+			RequestDispatcher view = request.getRequestDispatcher(mav.getViewName());
 			view.forward(request, response);
 			
 		}
-
 	}
 
 	/**
