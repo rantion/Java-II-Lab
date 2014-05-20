@@ -1,8 +1,8 @@
-package wellEndowed;
+package models;
 
 import java.util.List;
 
-public class MessageChat implements MessageChatable
+public class MessageChat 
 {
 	private List<User> chatUsers;
 	private List<Message> messages;

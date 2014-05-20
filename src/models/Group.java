@@ -1,10 +1,10 @@
-package wellEndowed;
+package models;
 
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
-public class Group implements Groupable{
+public class Group{
 	private String name;
 	private HashMap<String, User> members;
 	

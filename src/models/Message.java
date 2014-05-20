@@ -1,9 +1,9 @@
-package wellEndowed;
+package models;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class Message implements Messageable {
+public class Message{
 	
 	private User sender;
 	private List<User> receivers;

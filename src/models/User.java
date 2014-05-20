@@ -1,14 +1,14 @@
-package wellEndowed;
+package models;
 
 import java.awt.Image;
 import java.util.List;
 import java.util.ArrayList;
 
-public class User implements Userable{
+public class User{
 	
 	private String firstName, lastName, bio, userName;
-	private Groupable followers, following;
-	private List<Groupable> groups;
+	private Group followers, following;
+	private List<Group> groups;
 	private List<Post> posts;
 	private List<Message>messages;
 	private Image profilePicture;
@@ -20,7 +20,7 @@ public class User implements Userable{
 		this.setUserName(userName);
 		this.followers = new Group(userName+" followers");
 		this.following = new Group(userName+" following");
-		this.groups = new ArrayList<Groupable>();
+		this.groups = new ArrayList<Group>();
 		this.posts = new ArrayList<Post>();
 		this.messages = new ArrayList<Message>();
 		this.profilePicture = null;

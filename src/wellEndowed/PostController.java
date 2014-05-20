@@ -9,12 +9,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Group;
+import models.User;
+
 
 
 public class PostController {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	private Groupable members = ServiceLoader.members;
+	private Group members = ServiceLoader.members;
 	
 	public PostController(HttpServletRequest request, HttpServletResponse respnonse){
 		this.request = request;

@@ -1,4 +1,4 @@
-package wellEndowed;
+package models;
 
 import java.util.Calendar;
 

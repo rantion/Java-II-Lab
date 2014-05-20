@@ -3,11 +3,13 @@ package wellEndowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Group;
+
 
 public class GetController {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	private Groupable members = ServiceLoader.members;
+	private Group members = ServiceLoader.members;
 	
 	public GetController(HttpServletRequest request, HttpServletResponse response){
 		this.request = request;
