@@ -1,4 +1,4 @@
-package models;
+package wellEndowed;
 
 import java.security.Principal;
 
