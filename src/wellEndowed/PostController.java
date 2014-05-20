@@ -6,23 +6,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Group;
 import models.User;
 
-
-
+@Stateless
+@LocalBean
 public class PostController {
-	private HttpServletRequest request;
-	private HttpServletResponse response;
-	private Group members = ServiceLoader.members;
-	
-	public PostController(HttpServletRequest request, HttpServletResponse respnonse){
-		this.request = request;
-		this.response = response;
-	}
+	@Inject private HttpServletRequest request;
+	@Inject private HttpServletResponse response;
+	@Inject private Group members = ServiceLoader.members;
 	
 	public ModelAndView register(){
 		String firstName = request.getParameter("firstName");

@@ -1,20 +1,19 @@
 package wellEndowed;
 
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Group;
 
-
+@Stateless
+@LocalBean
 public class GetController {
-	private HttpServletRequest request;
-	private HttpServletResponse response;
-	private Group members = ServiceLoader.members;
-	
-	public GetController(HttpServletRequest request, HttpServletResponse response){
-		this.request = request;
-		this.response = response;
-	}
+	@Inject private HttpServletRequest request;
+	@Inject private HttpServletResponse response;
+	@Inject private Group members = ServiceLoader.members;
 	
 	public ModelAndView newsfeed(){
 		ModelAndView nf = new ModelAndView(null, "/newsFeed.jsp");
