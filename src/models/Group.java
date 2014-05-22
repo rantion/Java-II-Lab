@@ -5,10 +5,17 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class Group{
+	private User groupOwner;
 	private String name;
 	private HashMap<String, User> members;
 	
-	public Group(String name){
+	public Group (String name){
+		this.name = name;
+		this.members = new HashMap<String, User>();
+	}
+	
+	public Group(User groupOwner, String name){
+		this.groupOwner = groupOwner;
 		this.name = name;
 		this.members = new HashMap<String, User>();
 	}

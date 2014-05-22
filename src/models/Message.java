@@ -6,16 +6,16 @@ import java.util.List;
 public class Message{
 	
 	private User sender;
-	private List<User> receivers;
 	private Calendar dateSent;
 	private String content;
+	private MessageChat messageChat;
 //	private boolean isGroupMessage;
 	
-	public Message(User sender, List<User> receivers, String content)
+	public Message(User sender, User receiver, String content, MessageChat messageChat)
 	{
 		this.sender = sender;
-		this.receivers = receivers;
 		this.content = content;
+		this.messageChat = messageChat;
 		dateSent = Calendar.getInstance();
 	}
 
@@ -25,14 +25,6 @@ public class Message{
 
 	public void setSender(User sender) {
 		this.sender = sender;
-	}
-
-	public List<User> getReceivers() {
-		return receivers;
-	}
-
-	public void setReceivers(List<User> receivers) {
-		this.receivers = receivers;
 	}
 	
 	public Calendar getDateSent() {
@@ -51,11 +43,4 @@ public class Message{
 		this.content = content;
 	}
 
-//	public boolean isGroupMessage() {
-//		return isGroupMessage;
-//	}
-//
-//	public void setGroupMessage(boolean isGroupMessage) {
-//		this.isGroupMessage = isGroupMessage;
-//	}
 }

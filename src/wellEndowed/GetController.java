@@ -12,8 +12,7 @@ import models.Group;
 @LocalBean
 public class GetController {
 	@Inject private HttpServletRequest request;
-	@Inject private HttpServletResponse response;
-	@Inject private Group members = ServiceLoader.members;
+	private Group members = ServiceLoader.members;
 	
 	public ModelAndView newsfeed(){
 		ModelAndView nf = new ModelAndView(null, "/newsFeed.jsp");

@@ -30,23 +30,26 @@ public class User{
 	private String lastName;
 	@Column(name="bio")
 	private String bio;	
-	private Followers followers;
-	private Following following;
+	@Column(name="profilePicture")
+	private Image profilePicture;
+	
+	private Group followers;
+	private Group following;
 	private List<Group> groups;
 	private List<Post> posts;
-	private List<Message>messages;
-	private Image profilePicture;
-
+	private List<MessageChat> messageChat;
 	
 	public User(String firstName, String lastName, String userName){
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.setUserName(userName);
-		this.followers = new Followers();
-		this.following = new Following();
+		this.followers = new Group(this, userName+"FOLLOWERS");
+		this.following = new Group(this, userName+"FOLLOWING");
 		this.groups = new ArrayList<Group>();
+		this.groups.add(followers);
+		this.groups.add(following);
 		this.posts = new ArrayList<Post>();
-		this.messages = new ArrayList<Message>();
+		this.messageChat = new ArrayList<MessageChat>();
 		this.profilePicture = null;
 	}
 

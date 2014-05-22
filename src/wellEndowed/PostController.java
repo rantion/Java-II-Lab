@@ -19,8 +19,7 @@ import models.User;
 @LocalBean
 public class PostController {
 	@Inject private HttpServletRequest request;
-	@Inject private HttpServletResponse response;
-	@Inject private Group members = ServiceLoader.members;
+	private Group members = ServiceLoader.members;
 	
 	public ModelAndView register(){
 		String firstName = request.getParameter("firstName");
