@@ -4,9 +4,23 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+
 public class Group{
+	@Id
+	@Column(name="id")
+	@SequenceGenerator(name="account_seq", sequenceName="account_seq", initialValue=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
+	private Long id;
+	@Column(name = "groupOwner")
 	private User groupOwner;
+	@Column(name = "name")
 	private String name;
+	
 	private HashMap<String, User> members;
 	
 	public Group (String name){

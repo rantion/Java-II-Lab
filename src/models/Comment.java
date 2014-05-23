@@ -2,11 +2,26 @@ package models;
 
 import java.util.Calendar;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+
 public class Comment 
 {	
+	@Id
+	@Column(name="id")
+	@SequenceGenerator(name="account_seq", sequenceName="account_seq", initialValue=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
+	private int id;	
+	@Column(name="creator")
 	private User creator;
+	@Column(name = "belongsOnPost")
 	private Post belongsOnPost;
+	@Column(name = "belongsOnComment")
 	private Comment belongsOnComment;
+	
 	private String content;
 	private Calendar postTime;
 	
