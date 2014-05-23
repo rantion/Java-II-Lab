@@ -26,8 +26,12 @@ public class Group{
 	}
 
 	
-	public void addUser(User user) {
+	public void addMember(User user) {
 		members.put(user.getUserName(), user);
+	}
+	
+	public void removeMember(User user){
+		members.remove(user.getUserName());
 	}
 
 		
@@ -44,6 +48,11 @@ public class Group{
 	
 	public String getGroupName() {
 		return name;
+	}
+	
+	@Override
+public String toString(){
+	return name;	
 	}
 
 }

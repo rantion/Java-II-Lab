@@ -8,14 +8,12 @@ public class Message{
 	private User sender;
 	private Calendar dateSent;
 	private String content;
-	private MessageChat messageChat;
 //	private boolean isGroupMessage;
 	
-	public Message(User sender, User receiver, String content, MessageChat messageChat)
+	public Message(User sender, String content)
 	{
 		this.sender = sender;
 		this.content = content;
-		this.messageChat = messageChat;
 		dateSent = Calendar.getInstance();
 	}
 
@@ -41,6 +39,11 @@ public class Message{
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+	
+	@Override
+	public String toString(){
+		return ("Sender: "+sender.toString()+": "+content);
 	}
 
 }

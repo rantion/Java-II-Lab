@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageChat 
@@ -10,6 +11,7 @@ public class MessageChat
 	public MessageChat(List<User> users)
 	{
 		this.setChatUsers(users);
+		this.messages = new ArrayList<Message>();
 	}
 
 	public List<User> getChatUsers() {
@@ -18,6 +20,14 @@ public class MessageChat
 
 	public void setChatUsers(List<User> chatUsers) {
 		this.chatUsers = chatUsers;
+		for(User user: chatUsers){
+			user.addMessageChat(this);
+		}
+	}
+	
+	public void addUser(User user){
+		chatUsers.add(user);
+		user.addMessageChat(this);
 	}
 	
 	public List<Message> getMessages() {
