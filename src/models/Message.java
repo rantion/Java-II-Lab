@@ -3,10 +3,23 @@ package models;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+
 public class Message{
-	
+	@Id
+	@Column(name="id")
+	@SequenceGenerator(name="account_seq", sequenceName="account_seq", initialValue=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
+	private int id;	
+	@Column(name="sender")
 	private User sender;
+	@Column(name = "dateSent")
 	private Calendar dateSent;
+	@Column(name = "content")
 	private String content;
 //	private boolean isGroupMessage;
 	
