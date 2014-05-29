@@ -3,18 +3,34 @@ package models;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+
 public class Message{
-	
+	@Id
+	@Column(name="id")
+	@SequenceGenerator(name="account_seq", sequenceName="account_seq", initialValue=1, allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
+	private int id;	
+	@Column(name="sender")
+	@ManyToOne
+	@JoinColumn(name="user_id")
 	private User sender;
-	private List<User> receivers;
+	
+	@Column(name = "dateSent")
 	private Calendar dateSent;
+	@Column(name = "content")
 	private String content;
 //	private boolean isGroupMessage;
 	
-	public Message(User sender, List<User> receivers, String content)
+	public Message(User sender, String content)
 	{
 		this.sender = sender;
-		this.receivers = receivers;
 		this.content = content;
 		dateSent = Calendar.getInstance();
 	}
@@ -25,14 +41,6 @@ public class Message{
 
 	public void setSender(User sender) {
 		this.sender = sender;
-	}
-
-	public List<User> getReceivers() {
-		return receivers;
-	}
-
-	public void setReceivers(List<User> receivers) {
-		this.receivers = receivers;
 	}
 	
 	public Calendar getDateSent() {
@@ -50,12 +58,10 @@ public class Message{
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
+	@Override
+	public String toString(){
+		return ("Sender: "+sender.toString()+": "+content);
+	}
 
-//	public boolean isGroupMessage() {
-//		return isGroupMessage;
-//	}
-//
-//	public void setGroupMessage(boolean isGroupMessage) {
-//		this.isGroupMessage = isGroupMessage;
-//	}
 }
