@@ -7,16 +7,21 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 public class Message{
 	@Id
 	@Column(name="id")
-	@SequenceGenerator(name="account_seq", sequenceName="account_seq", initialValue=1)
+	@SequenceGenerator(name="account_seq", sequenceName="account_seq", initialValue=1, allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
 	private int id;	
 	@Column(name="sender")
+	@ManyToOne
+	@JoinColumn(name="user_id")
 	private User sender;
+	
 	@Column(name = "dateSent")
 	private Calendar dateSent;
 	@Column(name = "content")

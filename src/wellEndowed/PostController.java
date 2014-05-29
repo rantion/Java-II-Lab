@@ -45,7 +45,7 @@ public class PostController {
 	public ModelAndView searchMember(){
 		String inquiry = request.getParameter("inquiry").toLowerCase();
 		List<User> results = new ArrayList();
-		Iterator it = members.getGroup().entrySet().iterator();
+		Iterator it = members.getGroup().iterator();
 		while (it.hasNext()) {
 			Map.Entry<String, User> pair = (Map.Entry<String, User>)it.next();
 			String userName = pair.getKey().toLowerCase();

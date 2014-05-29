@@ -3,19 +3,47 @@ package models;
 import java.io.File;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+
 import org.joda.time.DateTime;
 
 public class Post {
-	
+	@Id
+	@Column(name="id")
+	@SequenceGenerator(name="account_seq", sequenceName="account_seq", initialValue=1, allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
+	private int id;	
+	@OneToMany(mappedBy="post")
 	private List<Post> reactions;
+	@OneToMany(mappedBy="comment")
 	private List<Comment> comments;
+	@Column(name="postTime")
 	private DateTime postTime;
+	@ManyToOne
+	@JoinColumn(name="user_id")
 	private User poster;
-	private String fileType;
-	private File postContent;
-	private Group permittedViewers, haveSeenPost;
-	private boolean isPrivate, hasAudio, hasVideo;
-	
+	@Column(name="fileType")
+	private String fileType;	
+	@ManyToOne
+	@JoinColumn(name="group_id")
+	private Group permittedViewers;
+	@ManyToOne
+	@JoinColumn(name="group_id")
+	private Group haveSeenPost;
+	@Column(name="isPrivate")
+	private boolean isPrivate;
+	@Column(name= "hasAudio")
+	private boolean hasAudio;
+	@Column(name="hasVideo")
+	private boolean hasVideo;
+	private File postContent;	
 	public Post(){
 		
 	}

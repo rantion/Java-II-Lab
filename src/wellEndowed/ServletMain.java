@@ -1,6 +1,9 @@
 package wellEndowed;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.User;
+
 /**
  * Servlet implementation class ServletMain
  */
@@ -20,6 +25,7 @@ public class ServletMain extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Inject private GetController getController;
 	@Inject private PostController postController;
+	@Inject private MemberService ms;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -86,6 +92,20 @@ public class ServletMain extends HttpServlet {
 			RequestDispatcher view = request.getRequestDispatcher(mav.getViewName());
 			view.forward(request, response);
 			
+		}
+		else if(page.equals("testing")){
+			OutputStream output = response.getOutputStream();
+			PrintWriter pw = new PrintWriter(output);
+				User user = new User("Rachel", "Antion", "rantion");
+				User user1 = new User("Luis", "Heinecke", "lheinecke");
+				User user2 = new User("Daniel","Morroquin", "dmorroquin");
+				User user3 = new User("Tyler", "Howes", "thowes");
+				
+				ms.addUser(user);
+				ms.addUser(user1);
+				ms.addUser(user3);
+				ms.addUser(user2);
+				pw.println(ms.getUser("rantion"));
 		}
 	}
 
