@@ -14,6 +14,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -45,11 +47,19 @@ public class User {
 	@Column(name = "profilePicture")
 	private File profilePicture;
 	
-//	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
-	private Set<Group> groups;
-//	@ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST})
-	private Set<Post> posts;	
-//	@ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST})
+	@ManyToMany(mappedBy="members",fetch=FetchType.LAZY)
+	private Set<Group> groups = new HashSet<Group>();
+	
+	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
+	@JoinTable(name="user_post", 
+	joinColumns=@JoinColumn(name="user_id"),
+	inverseJoinColumns=@JoinColumn(name="post_id"))
+	private Set<Post> posts = new HashSet<Post>();	
+	
+	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
+	@JoinTable(name="user_messageChat", 
+	joinColumns=@JoinColumn(name="user_id"),
+	inverseJoinColumns=@JoinColumn(name="messagechat_id"))
 	private Set<MessageChat> messageChats;
 	private Group followers;
 	private Group following;
@@ -58,18 +68,20 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.setUserName(userName);
-		followers = new Group(this, userName + "FOLLOWERS");
-		following = new Group(this, userName + "FOLLOWING");
-		this.groups = new HashSet<Group>();
-		this.groups.add(followers);
-		this.groups.add(following);
-		this.posts = new HashSet<Post>();
+//		followers = new Group(this, userName + "FOLLOWERS");
+//		following = new Group(this, userName + "FOLLOWING");
+//		this.groups.add(followers);
+//		this.groups.add(following);
 		this.messageChats = new HashSet<MessageChat>();
 		this.profilePicture = null;
 	}
 	
 	public User(){
 		
+	}
+	
+	public Long getId(){
+		return id;
 	}
 
 	public void startMessageChat(List<User> users, String messageContent) {
@@ -99,14 +111,6 @@ public class User {
 		if (!messageChats.contains(messageChat)) {
 			messageChats.add(messageChat);
 		}
-	}
-
-	public void createNewGroup(String groupName, List<User> groupMembers) {
-		Group group = new Group(this, groupName);
-		for (User user : groupMembers) {
-			group.addMember(user);
-		}
-		groups.add(group);
 	}
 
 	public Group getGroup(String groupName) {

@@ -3,14 +3,22 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "MessageChat")
 public class MessageChat 
 {
 	
@@ -20,10 +28,13 @@ public class MessageChat
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
 	private int id;	
 	
-	@ManyToMany(mappedBy="user")
+	@ManyToMany(mappedBy="messageChats",fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
 	private List<User> chatUsers;
 	
-	@ManyToMany(mappedBy="messages")
+	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
+	@JoinTable(name="messageChat_message", 
+	joinColumns=@JoinColumn(name="messagechat_id"),
+	inverseJoinColumns=@JoinColumn(name="message_id"))
 	private List<Message> messages;
 	
 	public MessageChat(List<User> users)

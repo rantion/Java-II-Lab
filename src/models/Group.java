@@ -4,16 +4,30 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Groups")
+@NamedQueries({
+	@NamedQuery(name="byGroupOwnerandName", query="SELECT g FROM Group g WHERE g.groupOwner = :groupOwner AND g.name = :groupName")
+})
 public class Group {
 	@Id
 	@Column(name = "id")
@@ -27,12 +41,15 @@ public class Group {
 	
 	@Column(name = "name")
 	private String name;
-	@OneToMany(mappedBy="user")
-	private HashSet<User> members;
+	
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name="user_group", 
+	joinColumns=@JoinColumn(name="groups_id"),
+	inverseJoinColumns=@JoinColumn(name="user_id"))
+	private Set<User> members = new HashSet<User>();
 
 	public Group(String name) {
 		this.name = name;
-		this.members = new HashSet<User>();
 	}
 
 	public Group(User groupOwner, String name) {
@@ -49,7 +66,7 @@ public class Group {
 		members.remove(user.getUserName());
 	}
 
-	public HashSet<User> getGroup() {
+	public Set<User> getGroup() {
 		return members;
 	}
 
