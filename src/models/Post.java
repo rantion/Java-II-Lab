@@ -1,6 +1,7 @@
 package models;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,25 +32,16 @@ public class Post {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
 	private int id;	
 	
-	@ManyToOne
-    @JoinColumn(name="post_id")
-	private Post post = this;
-	
-    @OneToMany
-	private Set<Post> reactions = new HashSet<Post>();
-    
-	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
-	@JoinTable(name="post_comments", 
-	joinColumns=@JoinColumn(name="post_id"),
-	inverseJoinColumns=@JoinColumn(name="comment_id"))
-	private List<Comment> comments;
-	
 	@Column(name="postTime")
-	private DateTime postTime;
+	private Calendar postTime;
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User poster;
+	
+	@ManyToOne
+	@JoinColumn(name="post_id")
+	private Post postingOn;
 	
 	@Column(name="fileType")
 	private String fileType;
@@ -64,37 +56,29 @@ public class Post {
 	
 	@Column(name="isPrivate")
 	private boolean isPrivate;
+	
 	@Column(name= "hasAudio")
 	private boolean hasAudio;
+	
 	@Column(name="hasVideo")
 	private boolean hasVideo;
 	
-	private File postContent;	
-	public Post(){
+	private File postContent;
+	
+	public Post(User poster){
+		this.poster = poster;
+		this.postTime = Calendar.getInstance();
+	}
+	
+	public Post(User poster, Post postingOn){
 		
 	}
 
-	public Set<Post> getReactions() {
-		return reactions;
-	}
-
-	public void setReactions(Set<Post> reactions) {
-		this.reactions = reactions;
-	}
-
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-
-	public DateTime getPostTime() {
+	public Calendar getPostTime() {
 		return postTime;
 	}
 
-	public void setPostTime(DateTime postTime) {
+	public void setPostTime(Calendar postTime) {
 		this.postTime = postTime;
 	}
 

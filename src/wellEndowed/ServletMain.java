@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Comment;
 import models.Group;
+import models.Post;
 import models.User;
 
 /**
@@ -30,6 +32,8 @@ public class ServletMain extends HttpServlet {
 	@Inject private PostController postController;
 	@Inject private MemberService ms;
 	@Inject private GroupService gs;
+	@Inject private CommentService cs;
+	@Inject private PostService ps;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -98,22 +102,41 @@ public class ServletMain extends HttpServlet {
 			
 		}
 		else if(page.equals("testing")){
+				System.out.println("starting Testing");
 				ms.deleteUsers();
+				gs.removeGroups();
+				List<Group> groups = gs.getGroups();
+				System.out.println(groups);
 				User user = new User("Rachel", "Antion", "rantion");
 				User user1 = new User("Luis", "Heinecke", "lheinecke");
 				User user2 = new User("Daniel","Morroquin", "dmorroquin");
 				User user3 = new User("Tyler", "Howes", "thowes");
 				User user4 = new User("Josh", "Cummings", "jcummings");
-				
+			
 				ms.addUser(user);
 				ms.addUser(user1);
 				ms.addUser(user3);
 				ms.addUser(user2);
 				
-				gs.createNewGroup(user,"coolKids",user1, user2, user3);
-				Group group =gs.getGroup(user, "coolKids");
-				group.addMember(user4);
-				System.out.println(ms.getUser("rantion"));
+				gs.startFollowing(user, user2);
+				Group group = gs.getGroup(user2, user2.getUserName()+"FOLLOWERS");
+				group.printMembers();
+				
+//				gs.createNewGroup(user,"coolKids",user1, user2, user3);
+//				Group group =gs.getGroup(user, "coolKids");
+//				group.addMember(user4);
+//				System.out.println(ms.getUser("rantion"));
+//				Post post = new Post();
+//				ps.addPost(post);
+//				Comment comment = new Comment(user, post, "FUCK");
+//				Comment comment2 = new Comment(user, comment, "ME");
+//				cs.addComment(comment);
+//				cs.addComment(comment2);
+//				List<Comment> comments = cs.getCommentsByComment(comment);	
+//				for(Comment com: comments){
+//					System.out.println(com);
+//				}
+				
 				
 		}
 	}

@@ -9,10 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 @Entity
 @Table(name = "Comment")
+@NamedQueries({
+	@NamedQuery(name="byCommentNum", query="SELECT c FROM Comment c WHERE c.id = :commentId"),
+	@NamedQuery(name="byPost", query="SELECT c FROM Comment c WHERE c.belongsOnPost = :post"),
+	@NamedQuery(name="byComment", query="SELECT c FROM Comment c WHERE c.belongsOnComment = :comment")
+})
 public class Comment 
 {	
 	@Id
@@ -41,14 +48,23 @@ public class Comment
 	
 	public Comment(User creator, Post post, String content)
 	{
-//		belongsOnPost.addComment(this);
+		this.creator = creator;
+		this.belongsOnPost = post;
+		this.content = content;
 		postTime = Calendar.getInstance();
 	}
 	
 	public Comment(User creator, Comment commentOn, String content)
 	{
-//		belongsOnComment.addComment(this);
+		this.creator = creator;
+		this.belongsOnComment = commentOn;
+		this.content = content;
 		postTime = Calendar.getInstance();
+	}
+	
+	@Override
+	public String toString(){
+		return content;
 	}
 
 	public User getCreator() {

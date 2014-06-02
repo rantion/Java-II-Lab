@@ -1,4 +1,4 @@
-package models;
+ package models;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,13 +36,21 @@ public class Group {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = " ")
 	private User groupOwner;
 	
+	public User getGroupOwner() {
+		return groupOwner;
+	}
+
+	public void setGroupOwner(User groupOwner) {
+		this.groupOwner = groupOwner;
+	}
+
 	@Column(name = "name")
 	private String name;
 	
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinTable(name="user_group", 
 	joinColumns=@JoinColumn(name="groups_id"),
 	inverseJoinColumns=@JoinColumn(name="user_id"))
@@ -55,11 +63,16 @@ public class Group {
 	public Group(User groupOwner, String name) {
 		this.groupOwner = groupOwner;
 		this.name = name;
-		this.members = new HashSet<User>();
+	}
+	
+	public void printMembers(){
+		System.out.println(members);
 	}
 
 	public void addMember(User user) {
+		System.out.println("Adding "+user+" to "+name);
 		members.add(user);
+		System.out.println("Members after adding: "+members);
 	}
 
 	public void removeMember(User user) {
@@ -81,7 +94,7 @@ public class Group {
 
 	@Override
 	public String toString() {
-		return name;
+		return id+": "+name;
 	}
 
 }
