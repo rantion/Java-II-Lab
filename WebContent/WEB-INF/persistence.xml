@@ -7,15 +7,17 @@
 	<persistence-unit name="reactionDistractionUnit"
 		transaction-type="JTA">
 		<jta-data-source>reactionDistractionDataSource</jta-data-source>
-		<class>model.User</class>
-		<class>model.Comment</class>
-		<class>model.Group</class>
-		<class>model.Message</class>
-		<class>model.MessageChat</class>
-		<class>model.Post</class>
+		<class>models.User</class>
+		<class>models.Comment</class>
+		<class>models.Group</class>
+		<class>models.Message</class>
+		<class>models.MessageChat</class>
+		<class>models.Post</class>
 
 		<properties>
 			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)" />
+			<property name="openjpa.Log" value="SQL=TRACE"/>
+			<property name="openjpa.ConnectionFactoryProperties" value="PrintParameters=true" />
 		</properties>
 	</persistence-unit>
 </persistence>

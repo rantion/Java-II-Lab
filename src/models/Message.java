@@ -26,8 +26,8 @@ public class Message{
 	@JoinColumn(name="user_id")
 	private User sender;
 	
-	@Column(name = "dateSent")
-	private Calendar dateSent;
+//	@Column(name = "dateSent")
+//	private Calendar dateSent;
 	@Column(name = "content")
 	private String content;
 //	private boolean isGroupMessage;
@@ -36,7 +36,7 @@ public class Message{
 	{
 		this.sender = sender;
 		this.content = content;
-		dateSent = Calendar.getInstance();
+//		dateSent = Calendar.getInstance();
 	}
 
 	public User getSender() {
@@ -47,13 +47,13 @@ public class Message{
 		this.sender = sender;
 	}
 	
-	public Calendar getDateSent() {
-		return dateSent;
-	}
-
-	public void setDateSent(Calendar dateSent) {
-		this.dateSent = dateSent;
-	}
+//	public Calendar getDateSent() {
+//		return dateSent;
+//	}
+//
+//	public void setDateSent(Calendar dateSent) {
+//		this.dateSent = dateSent;
+//	}
 
 	public String getContent() {
 		return content;

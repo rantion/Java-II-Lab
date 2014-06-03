@@ -38,9 +38,5 @@ public class CommentService {
 	public void updateCommet(Comment comment){
 		em.persist(comment);
 	}
-	
-	public Comment getMessageChat(int commentNum) {
-		return em.find(Comment.class, commentNum);
-	}
 
 }

@@ -68,10 +68,6 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.setUserName(userName);
-//		followers = new Group(this, userName + "FOLLOWERS");
-//		following = new Group(this, userName + "FOLLOWING");
-//		this.groups.add(followers);
-//		this.groups.add(following);
 		this.messageChats = new HashSet<MessageChat>();
 		this.profilePicture = null;
 	}
@@ -112,6 +108,10 @@ public class User {
 			messageChats.add(messageChat);
 		}
 	}
+	
+	public void addGroup(Group group){
+		groups.add(group);
+	}
 
 	public Group getGroup(String groupName) {
 		Group _group = null;
@@ -145,6 +145,10 @@ public class User {
 
 	}
 
+	public Set<Group> getGroups(){
+		return groups;
+	}
+	
 	public Set<MessageChat> getMessages() {
 		return messageChats;
 	}
@@ -171,7 +175,23 @@ public class User {
 
 	@Override
 	public String toString() {
-		return (userName + ": " + firstName + " " + lastName);
+		return (id+ ") "+userName + ": " + firstName + " " + lastName);
 	}
+
+	@Override
+	public int hashCode() {
+		int hashCode = (int)Long.parseLong(id.toString());
+		return hashCode;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (this.toString().equalsIgnoreCase(obj.toString()));		
+		
+		
+
+	}
+	
+
 
 }

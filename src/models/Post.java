@@ -1,6 +1,8 @@
 package models;
 
 import java.io.File;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -17,68 +19,71 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.joda.time.DateTime;
-
 @Entity
 @Table(name = "Post")
+@NamedQueries({ @NamedQuery(name = "postByPost", query = "SELECT p FROM Post p WHERE p.postingOn = :post") })
 public class Post {
 	@Id
-	@Column(name="id")
-	@SequenceGenerator(name="account_seq", sequenceName="account_seq", initialValue=1, allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
-	private int id;	
-	
-	@Column(name="postTime")
-	private Calendar postTime;
-	
+	@Column(name = "id")
+	@SequenceGenerator(name = "account_seq", sequenceName = "account_seq", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_seq")
+	private int id;
+
+	@Column(name = "postTime")
+	private Date postTime;
+
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	private User poster;
-	
+
 	@ManyToOne
-	@JoinColumn(name="post_id")
+	@JoinColumn(name = "post_id")
 	private Post postingOn;
-	
-	@Column(name="fileType")
+
+	@Column(name = "fileType")
 	private String fileType;
-	
+
 	@ManyToOne
-	@JoinColumn(name="group_id")
+	@JoinColumn(name = "group_id")
 	private Group permittedViewers;
-	
+
 	@ManyToOne
-	@JoinColumn(name="group_id")
+	@JoinColumn(name = "group_id")
 	private Group haveSeenPost;
-	
-	@Column(name="isPrivate")
+
+	@Column(name = "isPrivate")
 	private boolean isPrivate;
-	
-	@Column(name= "hasAudio")
+
+	@Column(name = "hasAudio")
 	private boolean hasAudio;
-	
-	@Column(name="hasVideo")
+
+	@Column(name = "hasVideo")
 	private boolean hasVideo;
-	
+
 	private File postContent;
-	
-	public Post(User poster){
+
+	public Post(User poster) {
 		this.poster = poster;
-		this.postTime = Calendar.getInstance();
-	}
-	
-	public Post(User poster, Post postingOn){
-		
+		Calendar calendar = Calendar.getInstance();
+		postTime = new Date(calendar.getTime().getTime());
 	}
 
-	public Calendar getPostTime() {
+	public Post(User poster, Post postingOn) {
+		this.poster = poster;
+		this.postingOn = postingOn;
+	}
+
+	public Date getPostTime() {
 		return postTime;
 	}
 
-	public void setPostTime(Calendar postTime) {
+	public void setPostTime(Date postTime) {
 		this.postTime = postTime;
 	}
 
