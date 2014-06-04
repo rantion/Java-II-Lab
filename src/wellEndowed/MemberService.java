@@ -18,7 +18,6 @@ public class MemberService {
 	
 	@PersistenceContext(name="reactionDistractionUnit")
 	private EntityManager em;
-	@Inject GroupService gs;
 	
 	public User getUser(String userName) {
 		Query q = em.createQuery("select u from User u where u.username = '"+userName+"'");
@@ -39,16 +38,6 @@ public class MemberService {
 		em.persist(u);
 	}
 	
-	public void addFollower(User user, User follower){
-		
-	}
-	
-	public void startFollowing(User user, User following){
-	if(gs.getGroup(following,following.getUserName()+"FOLLOWERS")!=null){
-		gs.createNewGroup(following,following.getUserName()+"FOLLOWERS", user);
-	}
-	}
-	
 	public List<User> getUsers(){
 		Query q = em.createQuery("select u from User u");
 		return q.getResultList();
@@ -60,7 +49,4 @@ public class MemberService {
 			em.remove(user);
 		}
 	}
-	
-	
-
 }

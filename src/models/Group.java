@@ -1,5 +1,6 @@
 package models;
 
+import java.sql.Clob;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -25,28 +26,35 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Groups")
-@NamedQueries({
-	@NamedQuery(name="byGroupOwnerandName", query="SELECT g FROM Group g WHERE g.groupOwner = :groupOwner AND g.name = :groupName")
-})
+@NamedQueries({ @NamedQuery(name = "byGroupOwnerandName", query = "SELECT g FROM Group g WHERE g.groupOwner = :groupOwner AND g.name = :groupName") })
 public class Group {
 	@Id
 	@Column(name = "id")
-	@SequenceGenerator(name = "account_seq", sequenceName = "account_seq", initialValue = 1, allocationSize=1)
+	@SequenceGenerator(name = "account_seq", sequenceName = "account_seq", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_seq")
 	private Long id;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User groupOwner;
-	
+
+	public User getGroupOwner() {
+		return groupOwner;
+	}
+
+	public void setGroupOwner(User groupOwner) {
+		this.groupOwner = groupOwner;
+	}
+
 	@Column(name = "name")
 	private String name;
-	
-	@ManyToMany(fetch=FetchType.LAZY)
-	@JoinTable(name="user_group", 
-	joinColumns=@JoinColumn(name="groups_id"),
-	inverseJoinColumns=@JoinColumn(name="user_id"))
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_group", joinColumns = @JoinColumn(name = "groups_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> members = new HashSet<User>();
+	
+	@Column(name="postContent")
+	private Clob postContent;
 
 	public Group(String name) {
 		this.name = name;
@@ -55,7 +63,14 @@ public class Group {
 	public Group(User groupOwner, String name) {
 		this.groupOwner = groupOwner;
 		this.name = name;
-		this.members = new HashSet<User>();
+	}
+
+	public void setMembers(Set<User> members) {
+		this.members = members;
+	}
+
+	public Set<User> getMembers() {
+		return members;
 	}
 	
 	public Group(){
@@ -63,15 +78,14 @@ public class Group {
 	}
 
 	public void addMember(User user) {
+		// System.out.println("Adding "+user+" to "+name);
 		members.add(user);
+		// System.out.println("Members after adding: "+members);
 	}
 
 	public void removeMember(User user) {
-		members.remove(user.getUserName());
-	}
+		members.remove(user);
 
-	public Set<User> getGroup() {
-		return members;
 	}
 
 	public void setGroupName(String name) {
@@ -85,7 +99,7 @@ public class Group {
 
 	@Override
 	public String toString() {
-		return name;
+		return id + ": " + name;
 	}
 
 }

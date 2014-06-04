@@ -1,101 +1,79 @@
 package models;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.joda.time.DateTime;
-
 @Entity
 @Table(name = "Post")
+@NamedQueries({ @NamedQuery(name = "postsByPost", query = "SELECT p FROM Post p WHERE p.postingOn = :post") })
 public class Post {
 	@Id
-	@Column(name="id")
-	@SequenceGenerator(name="account_seq", sequenceName="account_seq", initialValue=1, allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
-	private int id;	
-	
-	@ManyToOne
-    @JoinColumn(name="post_id")
-	private Post post = this;
-	
-    @OneToMany
-	private Set<Post> reactions = new HashSet<Post>();
-    
-	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
-	@JoinTable(name="post_comments", 
-	joinColumns=@JoinColumn(name="post_id"),
-	inverseJoinColumns=@JoinColumn(name="comment_id"))
-	private List<Comment> comments;
-	
+	@Column(name = "id")
+	@SequenceGenerator(name = "account_seq", sequenceName = "account_seq", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_seq")
+	private int id;
+
 	@Column(name="postTime")
-	private DateTime postTime;
-	
+	private Date postTime = new Date(System.currentTimeMillis());
+
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	private User poster;
-	
-	@Column(name="fileType")
+
+	@ManyToOne
+	@JoinColumn(name = "post_id")
+	private Post postingOn;
+
+	@Column(name = "fileType")
 	private String fileType;
-	
+
 	@ManyToOne
-	@JoinColumn(name="group_id")
+	@JoinColumn(name = "group_id")
 	private Group permittedViewers;
-	
+
 	@ManyToOne
-	@JoinColumn(name="group_id")
+	@JoinColumn(name = "group_id")
 	private Group haveSeenPost;
-	
-	@Column(name="isPrivate")
+
+	@Column(name = "isPrivate")
 	private boolean isPrivate;
-	@Column(name= "hasAudio")
+
+	@Column(name = "hasAudio")
 	private boolean hasAudio;
-	@Column(name="hasVideo")
+
+	@Column(name = "hasVideo")
 	private boolean hasVideo;
+
+	@Column(name= "postContent")
+	private byte[] postContent;
+
+	public Post() {}
 	
-	private File postContent;	
-	public Post(){
-		
+	public Post(User poster) {
+		this.poster = poster;
 	}
 
-	public Set<Post> getReactions() {
-		return reactions;
+	public Post(User poster, Post postingOn) {
+		this.poster = poster;
+		this.postingOn = postingOn;
 	}
 
-	public void setReactions(Set<Post> reactions) {
-		this.reactions = reactions;
-	}
-
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-
-	public DateTime getPostTime() {
+	public Date getPostTime() {
 		return postTime;
-	}
-
-	public void setPostTime(DateTime postTime) {
-		this.postTime = postTime;
 	}
 
 	public User getPoster() {
@@ -114,11 +92,11 @@ public class Post {
 		this.fileType = fileType;
 	}
 
-	public File getPostContent() {
+	public byte[] getPostContent() {
 		return postContent;
 	}
 
-	public void setPostContent(File postContent) {
+	public void setPostContent(byte[] postContent) {
 		this.postContent = postContent;
 	}
 

@@ -16,19 +16,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import wellEndowed.PasswordEncoder;
-
 @Entity
 @Table(name = "User")
-@NamedQueries({
-	@NamedQuery(name="getRoleOfUser", query="SELECT r.rolename FROM UserRole r WHERE r.username = :username")
-})
 public class User {
 	@Id
 	@Column(name = "id")
@@ -37,11 +30,11 @@ public class User {
 	private Long id;
 	
 	@Column(name = "username", unique = true)
-	private String username;
+	private String userName;
 	
 	@Column(name = "password")
 	private String password;
-
+	
 	@Column(name = "firstName")
 	private String firstName;
 
@@ -61,14 +54,16 @@ public class User {
 	@JoinTable(name="user_post", 
 	joinColumns=@JoinColumn(name="user_id"),
 	inverseJoinColumns=@JoinColumn(name="post_id"))
-	private Set<Post> posts = new HashSet<Post>();
+	private Set<Post> posts = new HashSet<Post>();	
 	
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
 	@JoinTable(name="user_messageChat", 
 	joinColumns=@JoinColumn(name="user_id"),
 	inverseJoinColumns=@JoinColumn(name="messagechat_id"))
 	private Set<MessageChat> messageChats;
-
+	private Group followers;
+	private Group following;
+	
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="user",
 			cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Set<UserRole> roles = new HashSet<>();
@@ -83,7 +78,7 @@ public class User {
 		UserRole ur = new UserRole();
 		ur.setRole(role);
 		ur.setUser(this);
-		ur.setUsername(username);
+		ur.setUsername(userName);
 		roles.add(ur);
 	}
 	
@@ -95,15 +90,11 @@ public class User {
 		}
 		return false;
 	}
-	
+
 	public User(String firstName, String lastName, String userName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.setUserName(userName);
-//		followers = new Group(this, userName + "FOLLOWERS");
-//		following = new Group(this, userName + "FOLLOWING");
-//		this.groups.add(followers);
-//		this.groups.add(following);
 		this.messageChats = new HashSet<MessageChat>();
 		this.profilePicture = null;
 	}
@@ -122,18 +113,31 @@ public class User {
 		messageChat.addMessage(new Message(this, messageContent));
 	}
 
+	public void addFollower(User user) {
+		followers.addMember(user);
+	}
+
+	public void follow(User user) {
+		following.addMember(user);
+		user.addFollower(this);
+	}
+
 	public String getUserName() {
-		return username;
+		return userName;
 	}
 
 	public void setUserName(String userName) {
-		this.username = userName;
+		this.userName = userName;
 	}
 
 	public void addMessageChat(MessageChat messageChat) {
 		if (!messageChats.contains(messageChat)) {
 			messageChats.add(messageChat);
 		}
+	}
+	
+	public void addGroup(Group group){
+		groups.add(group);
 	}
 
 	public Group getGroup(String groupName) {
@@ -145,6 +149,14 @@ public class User {
 		}
 		return _group;
 	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
 	public void removeGroup(String groupName) {
 		Group groupR = null;
@@ -154,23 +166,6 @@ public class User {
 			}
 		}
 		groups.remove(groupR);
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		PasswordEncoder pe = new PasswordEncoder();
-		this.password = pe.encode(password);
-	}	
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
 	}
 
 	public void postReaction(Post post, Post reaction) {
@@ -185,15 +180,53 @@ public class User {
 
 	}
 
+	public Set<Group> getGroups(){
+		return groups;
+	}
+	
 	public Set<MessageChat> getMessages() {
 		return messageChats;
 	}
 
+	public Group getFollowers() {
+		Group followers = null;
+		for (Group group : groups) {
+			if (group.getGroupName().equals(userName + "FOLLOWERS")) {
+				followers = group;
+			}
+		}
+		return followers;
+	}
 
+	public Group getFollowing() {
+		Group following = null;
+		for (Group group : groups) {
+			if (group.getGroupName().equals(userName + "FOLLOWING")) {
+				followers = group;
+			}
+		}
+		return followers;
+	}
 
 	@Override
 	public String toString() {
-		return (username + ": " + firstName + " " + lastName);
+		return (id+ ") "+userName + ": " + firstName + " " + lastName);
 	}
+
+	@Override
+	public int hashCode() {
+		int hashCode = (int)Long.parseLong(id.toString());
+		return hashCode;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (this.toString().equalsIgnoreCase(obj.toString()));		
+		
+		
+
+	}
+	
+
 
 }
