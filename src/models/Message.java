@@ -38,6 +38,10 @@ public class Message{
 		this.content = content;
 		dateSent = Calendar.getInstance();
 	}
+	
+	public Message(){
+		
+	}
 
 	public User getSender() {
 		return sender;

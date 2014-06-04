@@ -1,8 +1,7 @@
 package models;
 
-import java.awt.Image;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,11 +16,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import wellEndowed.PasswordEncoder;
+
 @Entity
 @Table(name = "User")
+@NamedQueries({
+	@NamedQuery(name="getRoleOfUser", query="SELECT r.rolename FROM UserRole r WHERE r.username = :username")
+})
 public class User {
 	@Id
 	@Column(name = "id")
@@ -30,14 +37,14 @@ public class User {
 	private Long id;
 	
 	@Column(name = "username", unique = true)
-	private String userName;
+	private String username;
 	
 	@Column(name = "password")
 	private String password;
-	
+
 	@Column(name = "firstName")
 	private String firstName;
-	
+
 	@Column(name = "lastName")
 	private String lastName;
 	
@@ -54,16 +61,41 @@ public class User {
 	@JoinTable(name="user_post", 
 	joinColumns=@JoinColumn(name="user_id"),
 	inverseJoinColumns=@JoinColumn(name="post_id"))
-	private Set<Post> posts = new HashSet<Post>();	
+	private Set<Post> posts = new HashSet<Post>();
 	
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
 	@JoinTable(name="user_messageChat", 
 	joinColumns=@JoinColumn(name="user_id"),
 	inverseJoinColumns=@JoinColumn(name="messagechat_id"))
 	private Set<MessageChat> messageChats;
-	private Group followers;
-	private Group following;
 
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="user",
+			cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	private Set<UserRole> roles = new HashSet<>();
+	
+	public Set<UserRole> getRoles() 
+	{
+		return Collections.unmodifiableSet(roles);
+	}
+	
+	public void addRole(Role role)
+	{
+		UserRole ur = new UserRole();
+		ur.setRole(role);
+		ur.setUser(this);
+		ur.setUsername(username);
+		roles.add(ur);
+	}
+	
+	public boolean hasRole(Role role) {
+		for ( UserRole userRole : roles ) {
+			if ( userRole.getRole().equals(role) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public User(String firstName, String lastName, String userName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -90,21 +122,12 @@ public class User {
 		messageChat.addMessage(new Message(this, messageContent));
 	}
 
-	public void addFollower(User user) {
-		followers.addMember(user);
-	}
-
-	public void follow(User user) {
-		following.addMember(user);
-		user.addFollower(this);
-	}
-
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.username = userName;
 	}
 
 	public void addMessageChat(MessageChat messageChat) {
@@ -132,6 +155,23 @@ public class User {
 		}
 		groups.remove(groupR);
 	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		PasswordEncoder pe = new PasswordEncoder();
+		this.password = pe.encode(password);
+	}	
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
 	public void postReaction(Post post, Post reaction) {
 
@@ -149,29 +189,11 @@ public class User {
 		return messageChats;
 	}
 
-	public Group getFollowers() {
-		Group followers = null;
-		for (Group group : groups) {
-			if (group.getGroupName().equals(userName + "FOLLOWERS")) {
-				followers = group;
-			}
-		}
-		return followers;
-	}
 
-	public Group getFollowing() {
-		Group following = null;
-		for (Group group : groups) {
-			if (group.getGroupName().equals(userName + "FOLLOWING")) {
-				followers = group;
-			}
-		}
-		return followers;
-	}
 
 	@Override
 	public String toString() {
-		return (userName + ": " + firstName + " " + lastName);
+		return (username + ": " + firstName + " " + lastName);
 	}
 
 }

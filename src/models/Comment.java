@@ -50,6 +50,10 @@ public class Comment
 //		belongsOnComment.addComment(this);
 		postTime = Calendar.getInstance();
 	}
+	
+	public Comment(){
+		
+	}
 
 	public User getCreator() {
 		return creator;

@@ -1,11 +1,6 @@
 package wellEndowed;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Group;
+import models.Role;
 import models.User;
+import models.UserRole;
 
 /**
  * Servlet implementation class ServletMain
@@ -116,6 +113,27 @@ public class ServletMain extends HttpServlet {
 				System.out.println(ms.getUser("rantion"));
 				
 		}
+//		else if( (page.equals("auth") && userName.equals("")) )
+//		{
+//			try {
+//				Thread.sleep(500);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			ms.deleteUsers();
+//			User user = new User("Luis", "asdf", "react");
+//			user.setPassword("asdf1234");
+//			
+//			user.addRole(Role.USER);
+//			
+//			ms.addUser(user);
+//			
+//			for(UserRole ur : user.getRoles())
+//			{
+//				System.out.println(ur);
+//			}
+//		}
 	}
 
 	/**

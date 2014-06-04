@@ -2,7 +2,6 @@ package wellEndowed;
 
 import java.util.List;
 
-import javax.ejb.Local;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -10,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import models.Group;
+import models.Role;
 import models.User;
 
 @Stateless
@@ -22,19 +21,21 @@ public class MemberService {
 	@Inject GroupService gs;
 	
 	public User getUser(String userName) {
-		Query q = em.createQuery("select u from User u where u.userName = '"+userName+"'");
+		Query q = em.createQuery("select u from User u where u.username = '"+userName+"'");
 		return (User)q.getSingleResult();
 	}
 	
 	public void addUser(User u){
-		Group followers = new Group(u, u.getUserName() + "FOLLOWERS");
-		Group following = new Group(u, u.getUserName() + "FOLLOWING");
-		em.persist(following);
-		em.persist(followers);
 		em.persist(u);
 	}
 
 	public void updateUser(User u) {
+		
+		if(!u.hasRole(Role.USER))
+		{
+			u.addRole(Role.USER);
+		}
+		
 		em.persist(u);
 	}
 	
@@ -59,6 +60,7 @@ public class MemberService {
 			em.remove(user);
 		}
 	}
+	
 	
 
 }

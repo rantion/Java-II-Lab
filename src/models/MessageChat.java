@@ -42,6 +42,10 @@ public class MessageChat
 		this.setChatUsers(users);
 		this.messages = new ArrayList<Message>();
 	}
+	
+	public MessageChat(){
+		
+	}
 
 	public List<User> getChatUsers() {
 		return chatUsers;

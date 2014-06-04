@@ -57,6 +57,10 @@ public class Group {
 		this.name = name;
 		this.members = new HashSet<User>();
 	}
+	
+	public Group(){
+		
+	}
 
 	public void addMember(User user) {
 		members.add(user);
