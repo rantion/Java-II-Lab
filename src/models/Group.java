@@ -1,5 +1,6 @@
 package models;
 
+import java.sql.Clob;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -51,6 +52,9 @@ public class Group {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_group", joinColumns = @JoinColumn(name = "groups_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> members = new HashSet<User>();
+	
+	@Column(name="postContent")
+	private Clob postContent;
 
 	public Group(String name) {
 		this.name = name;

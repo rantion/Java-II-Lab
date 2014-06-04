@@ -1,33 +1,25 @@
 package models;
 
 import java.io.File;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Post")
-@NamedQueries({ @NamedQuery(name = "postByPost", query = "SELECT p FROM Post p WHERE p.postingOn = :post") })
+@NamedQueries({ @NamedQuery(name = "postsByPost", query = "SELECT p FROM Post p WHERE p.postingOn = :post") })
 public class Post {
 	@Id
 	@Column(name = "id")
@@ -35,8 +27,8 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_seq")
 	private int id;
 
-	@Column(name = "postTime")
-	private Date postTime;
+	@Column(name="postTime")
+	private Date postTime = new Date(System.currentTimeMillis());
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -66,12 +58,13 @@ public class Post {
 	@Column(name = "hasVideo")
 	private boolean hasVideo;
 
-	private File postContent;
+	@Column(name= "postContent")
+	private byte[] postContent;
 
+	public Post() {}
+	
 	public Post(User poster) {
 		this.poster = poster;
-		Calendar calendar = Calendar.getInstance();
-		postTime = new Date(calendar.getTime().getTime());
 	}
 
 	public Post(User poster, Post postingOn) {
@@ -81,10 +74,6 @@ public class Post {
 
 	public Date getPostTime() {
 		return postTime;
-	}
-
-	public void setPostTime(Date postTime) {
-		this.postTime = postTime;
 	}
 
 	public User getPoster() {
@@ -103,11 +92,11 @@ public class Post {
 		this.fileType = fileType;
 	}
 
-	public File getPostContent() {
+	public byte[] getPostContent() {
 		return postContent;
 	}
 
-	public void setPostContent(File postContent) {
+	public void setPostContent(byte[] postContent) {
 		this.postContent = postContent;
 	}
 
