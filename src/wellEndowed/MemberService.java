@@ -30,9 +30,9 @@ public class MemberService {
 
 	public void updateUser(User u) {
 		
-		if(!u.hasRole(Role.USER))
+		if(!u.hasRole(Role.user))
 		{
-			u.addRole(Role.USER);
+			u.addRole(Role.user);
 		}
 		
 		em.persist(u);

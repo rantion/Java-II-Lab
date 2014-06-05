@@ -3,7 +3,9 @@ package wellEndowed;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -11,6 +13,7 @@ import models.Message;
 import models.MessageChat;
 import models.User;
 
+@Stateless
 public class MessageChatService {
 	
 	@PersistenceContext(name="reactionDistractionUnit")
@@ -28,21 +31,25 @@ public class MessageChatService {
 		return em.find(MessageChat.class, messageNum);
 	}
 	
-	@TransactionAttribute
+	public List<MessageChat> getMessageChats(){
+		return em.createQuery("Select i FROM MessageChat i").getResultList();
+	}
+	
 	public void startMessageChat(User messageStarter,String messageContent, User...members) {
 		List<User> users = new ArrayList<User>();
 		for(User user: members){
+			user = em.merge(user);
 			users.add(user);
 		}
+		users.add(em.merge(messageStarter));
 		MessageChat messageChat = new MessageChat(users);
 		Message message = new Message(messageStarter, messageContent);
-		em.persist(message);
+		em.persist(message);	
 		messageChat.addMessage(message);
-		this.addMessageChat(messageChat);
+		messageChat.setChatUsers(users);
 		em.persist(messageChat);
-		em.persist(messageStarter);
-		for(User user: users){
-			em.persist(user);
+		for(User _user: users){
+			_user.addMessageChat(messageChat);
 		}
 	}
 

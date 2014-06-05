@@ -1,6 +1,7 @@
 package wellEndowed;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,8 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Comment;
+import models.MessageChat;
 import models.Post;
+import models.Role;
 import models.User;
+import models.UserRole;
 
 /**
  * Servlet implementation class ServletMain
@@ -120,6 +124,16 @@ public class ServletMain extends HttpServlet {
 			ms.addUser(user3);
 			ms.addUser(user2);
 			ms.addUser(user4);
+			
+			user.setMessageChats(new HashSet<MessageChat>());
+			
+			System.out.println(mcs.getMessageChats());
+			
+			mcs.startMessageChat(user, "Yooooo does this work?", user1, user2, user3);
+			
+			System.out.println(mcs.getMessageChats());
+//			System.out.println(user.getMessages());
+		}
 
 			// gs.startFollowing(user, user2);
 			// gs.startFollowing(user1, user2);
@@ -158,37 +172,36 @@ public class ServletMain extends HttpServlet {
 			// Group group =gs.getGroup(user, "coolKids");
 			// group.addMember(user4);
 			// System.out.println(ms.getUser("rantion"));
-			Post post = new Post(user);
-			Post post1 = new Post(user1, post);
-			ps.addPost(post);
-			ps.addPost(post1);
-			Comment comment = new Comment(user, post, "TEST");
-			Comment comment2 = new Comment(user, comment, "ME");
-			cs.addComment(comment);
-			cs.addComment(comment2);
-			List<Comment> comments = cs.getCommentsByComment(comment);
-			for (Comment com : comments) {
-				System.out.println(com);
-			}
-			System.out.println("Posts");
-			List<Post> posts = ps.getPostsOnPost(post);
-			for (Post pos : posts) {
-				System.out.println(pos);
-			}
+//			Post post = new Post(user);
+//			Post post1 = new Post(user1, post);
+//			ps.addPost(post);
+//			ps.addPost(post1);
+//			Comment comment = new Comment(user, post, "TEST");
+//			Comment comment2 = new Comment(user, comment, "ME");
+//			cs.addComment(comment);
+//			cs.addComment(comment2);
+//			List<Comment> comments = cs.getCommentsByComment(comment);
+//			for (Comment com : comments) {
+//				System.out.println(com);
+//			}
+//			System.out.println("Posts");
+//			List<Post> posts = ps.getPostsOnPost(post);
+//			for (Post pos : posts) {
+//				System.out.println(pos);
 		}
 //		else if( (page.equals("auth") && userName.equals("")) )
 //		{
 //			try {
 //				Thread.sleep(500);
 //			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
+//			                                           	// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
 //			ms.deleteUsers();
 //			User user = new User("Luis", "asdf", "react");
 //			user.setPassword("asdf1234");
 //			
-//			user.addRole(Role.USER);
+//			user.addRole(Role.user);
 //			
 //			ms.addUser(user);
 //			
@@ -197,7 +210,7 @@ public class ServletMain extends HttpServlet {
 //				System.out.println(ur);
 //			}
 //		}
-	}
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

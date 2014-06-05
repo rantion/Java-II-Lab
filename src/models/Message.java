@@ -20,11 +20,15 @@ public class Message{
 	@Column(name="id")
 	@SequenceGenerator(name="account_seq", sequenceName="account_seq", initialValue=1, allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
-	private int id;	
-	@Column(name="sender")
+	private Long id;	
+	
 	@ManyToOne
 	@JoinColumn(name="user_id")
-	private User sender;
+	private User sender; 
+	
+	@ManyToOne
+	@JoinColumn(name="messageChat_id")
+	private MessageChat messageChat;
 	
 //	@Column(name = "dateSent")
 //	private Calendar dateSent;
@@ -69,7 +73,7 @@ public class Message{
 	
 	@Override
 	public String toString(){
-		return ("Sender: "+sender.toString()+": "+content);
+		return ("Sender: "+sender.getUserName()+": "+content);
 	}
 
 }

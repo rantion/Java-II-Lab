@@ -20,6 +20,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import wellEndowed.PasswordEncoder;
+
 @Entity
 @Table(name = "User")
 public class User {
@@ -56,11 +58,12 @@ public class User {
 	inverseJoinColumns=@JoinColumn(name="post_id"))
 	private Set<Post> posts = new HashSet<Post>();	
 	
-	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
+	@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.ALL})
 	@JoinTable(name="user_messageChat", 
 	joinColumns=@JoinColumn(name="user_id"),
 	inverseJoinColumns=@JoinColumn(name="messagechat_id"))
 	private Set<MessageChat> messageChats;
+	
 	private Group followers;
 	private Group following;
 	
@@ -107,12 +110,6 @@ public class User {
 		return id;
 	}
 
-	public void startMessageChat(List<User> users, String messageContent) {
-		users.add(this);
-		MessageChat messageChat = new MessageChat(users);
-		messageChat.addMessage(new Message(this, messageContent));
-	}
-
 	public void addFollower(User user) {
 		followers.addMember(user);
 	}
@@ -131,9 +128,14 @@ public class User {
 	}
 
 	public void addMessageChat(MessageChat messageChat) {
+		
 		if (!messageChats.contains(messageChat)) {
 			messageChats.add(messageChat);
 		}
+	}
+	
+	public void setMessageChats(Set<MessageChat>messageChats){
+		this.messageChats = messageChats;
 	}
 	
 	public void addGroup(Group group){
@@ -225,6 +227,11 @@ public class User {
 		
 		
 
+	}
+
+	public void setPassword(String string) {
+		PasswordEncoder pe = new PasswordEncoder();
+		this.password = pe.encode(string);
 	}
 	
 

@@ -26,15 +26,15 @@ public class MessageChat
 	@Column(name="id")
 	@SequenceGenerator(name="account_seq", sequenceName="account_seq", initialValue=1, allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
-	private int id;	
+	private Long id;	
 	
-	@ManyToMany(mappedBy="messageChats",fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
+	@Column(name="subject")
+	private String subject;
+	
+	@ManyToMany(mappedBy="messageChats",fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.ALL})
 	private List<User> chatUsers;
 	
-	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
-	@JoinTable(name="messageChat_message", 
-	joinColumns=@JoinColumn(name="messagechat_id"),
-	inverseJoinColumns=@JoinColumn(name="message_id"))
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
 	private List<Message> messages;
 	
 	public MessageChat(List<User> users)
@@ -45,6 +45,14 @@ public class MessageChat
 	
 	public MessageChat(){
 		
+	}	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public List<User> getChatUsers() {
@@ -53,9 +61,6 @@ public class MessageChat
 
 	public void setChatUsers(List<User> chatUsers) {
 		this.chatUsers = chatUsers;
-		for(User user: chatUsers){
-			user.addMessageChat(this);
-		}
 	}
 	
 	public void addUser(User user){
@@ -75,4 +80,19 @@ public class MessageChat
 	{
 		messages.add(message);
 	}
+	
+	public String getSubject(){
+		return subject;
+	}
+	
+	public void setSubject(String subject){
+		this.subject = subject;
+	}
+	
+	@Override
+	public String toString(){
+		String toString = (getId()+") MESSAGE CHAT: Users: "+chatUsers+" Subject: "+subject+" Messages: "+messages);
+		return toString;
+	}
+	
 }
