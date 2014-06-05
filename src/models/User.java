@@ -20,6 +20,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import wellEndowed.PasswordEncoder;
+
 @Entity
 @Table(name = "User")
 public class User {
@@ -34,7 +36,7 @@ public class User {
 	
 	@Column(name = "password")
 	private String password;
-	
+
 	@Column(name = "firstName")
 	private String firstName;
 
@@ -178,6 +180,15 @@ public class User {
 
 	public void commentOnComment(Comment comment, Comment reply) {
 
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		PasswordEncoder pe = new PasswordEncoder();
+		this.password = pe.encode(password);
 	}
 
 	public Set<Group> getGroups(){
