@@ -2,6 +2,6 @@
 <resources>
 	<Resource id="reactionDistractionDataSource" type="DataSource">
 		JdbcDriver org.hsqldb.jdbcDriver
-		JdbcUrl jdbc:hsqldb:file:reactionDistraction
+		JdbcUrl jdbc:hsqldb:file:rd
 	</Resource>
 </resources>

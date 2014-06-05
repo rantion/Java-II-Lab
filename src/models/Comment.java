@@ -26,7 +26,7 @@ public class Comment
 	@Column(name="id")
 	@SequenceGenerator(name="account_seq", sequenceName="account_seq", initialValue=1,allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="account_seq")
-	private int id;	
+	private Long id;	
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")

@@ -25,7 +25,7 @@ public class Post {
 	@Column(name = "id")
 	@SequenceGenerator(name = "account_seq", sequenceName = "account_seq", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_seq")
-	private int id;
+	private Long id;
 
 	@Column(name="postTime")
 	private Date postTime = new Date(System.currentTimeMillis());
@@ -61,7 +61,9 @@ public class Post {
 	@Column(name= "postContent")
 	private byte[] postContent;
 
-	public Post() {}
+	public Post() {
+		
+	}
 	
 	public Post(User poster) {
 		this.poster = poster;
@@ -138,6 +140,10 @@ public class Post {
 
 	public void setHasVideo(boolean hasVideo) {
 		this.hasVideo = hasVideo;
+	}
+	
+	public String toString(){
+		return ("Sender: "+poster+" Time: "+postTime);
 	}
 
 }

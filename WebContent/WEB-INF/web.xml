@@ -7,7 +7,7 @@
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Reaction CRUD</web-resource-name>
-      <url-pattern>/reaction/*</url-pattern>
+      <url-pattern>/asdf/*</url-pattern>
      <!-- <http-method>POST</http-method> -->
     </web-resource-collection>
     <auth-constraint>
