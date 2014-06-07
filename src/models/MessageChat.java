@@ -1,7 +1,9 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,21 +33,12 @@ public class MessageChat
 	@Column(name="subject")
 	private String subject;
 	
-	@ManyToMany(mappedBy="messageChats",fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.ALL})
-	private List<User> chatUsers;
+	@ManyToMany(fetch = FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.ALL})
+	@JoinTable(name = "user_messageChat", joinColumns = @JoinColumn(name = "messagechat_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private Set<User> chatUsers = new HashSet<User>();
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.ALL})
-	private List<Message> messages;
-	
-	public MessageChat(List<User> users)
-	{
-		this.setChatUsers(users);
-		this.messages = new ArrayList<Message>();
-	}
-	
-	public MessageChat(){
-		
-	}	
+	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.ALL})
+	private Set<Message> messages = new HashSet<Message>();
 
 	public Long getId() {
 		return id;
@@ -55,26 +48,22 @@ public class MessageChat
 		this.id = id;
 	}
 
-	public List<User> getChatUsers() {
+	public Set<User> getChatUsers() {
 		return chatUsers;
 	}
 
-	public void setChatUsers(List<User> chatUsers) {
+	public void setChatUsers(Set<User> chatUsers) {
 		this.chatUsers = chatUsers;
 	}
 	
 	public void addUser(User user){
 		chatUsers.add(user);
-		user.addMessageChat(this);
 	}
 	
-	public List<Message> getMessages() {
+	public Set<Message> getMessages() {
 		return messages;
 	}
-	
-	public void setMessages(List<Message> messages) {
-		this.messages = messages;
-	}
+
 	
 	public void addMessage(Message message)
 	{
@@ -91,8 +80,16 @@ public class MessageChat
 	
 	@Override
 	public String toString(){
-		String toString = (getId()+") MESSAGE CHAT: Users: "+chatUsers+" Subject: "+subject+" Messages: "+messages);
+		String messageLog = "";
+		for(Message message: messages){
+			messageLog+= message+"\n";
+		}
+		String toString = getId().toString()+") MESSAGE CHAT: Users: "+ chatUsers+"\n Subject: " +subject+"\n Messages: "+ messageLog;
 		return toString;
 	}
-	
+
+	public void addChatUser(User user) {
+		chatUsers.add(user);
+	}
 }
+	

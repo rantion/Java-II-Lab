@@ -20,12 +20,13 @@ public class MemberService {
 	private EntityManager em;
 	
 	public User getUser(String userName) {
-		Query q = em.createQuery("select u from User u where u.username = '"+userName+"'");
+		Query q = em.createQuery("select u from User u where u.userName = '"+userName+"'");
 		return (User)q.getSingleResult();
 	}
 	
 	public void addUser(User u){
 		em.persist(u);
+		
 	}
 
 	public void updateUser(User u) {

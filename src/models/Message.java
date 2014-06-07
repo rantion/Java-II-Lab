@@ -43,6 +43,10 @@ public class Message{
 //		dateSent = Calendar.getInstance();
 	}
 	
+	public void setMessageChat(MessageChat messageChat){
+		this.messageChat = messageChat;
+	}
+	
 	public Message(){
 		
 	}

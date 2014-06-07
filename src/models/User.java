@@ -58,10 +58,7 @@ public class User {
 	inverseJoinColumns=@JoinColumn(name="post_id"))
 	private Set<Post> posts = new HashSet<Post>();	
 	
-	@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.ALL})
-	@JoinTable(name="user_messageChat", 
-	joinColumns=@JoinColumn(name="user_id"),
-	inverseJoinColumns=@JoinColumn(name="messagechat_id"))
+	@ManyToMany(mappedBy="chatUsers", fetch = FetchType.EAGER)
 	private Set<MessageChat> messageChats;
 	
 	private Group followers;
@@ -119,7 +116,7 @@ public class User {
 		user.addFollower(this);
 	}
 
-	public String getUserName() {
+	public String getUserName(){ 
 		return userName;
 	}
 
@@ -237,12 +234,4 @@ public class User {
 		
 
 	}
-
-	public void setPassword(String string) {
-		PasswordEncoder pe = new PasswordEncoder();
-		this.password = pe.encode(string);
-	}
-	
-
-
 }

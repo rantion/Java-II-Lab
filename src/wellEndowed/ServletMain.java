@@ -1,8 +1,7 @@
 package wellEndowed;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,12 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Comment;
+import models.Message;
 import models.MessageChat;
-import models.Post;
-import models.Role;
 import models.User;
-import models.UserRole;
 
 /**
  * Servlet implementation class ServletMain
@@ -41,6 +37,8 @@ public class ServletMain extends HttpServlet {
 	private PostService ps;
 	@Inject
 	private MessageChatService mcs;
+	@Inject 
+	private MessageService mgs;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -113,6 +111,8 @@ public class ServletMain extends HttpServlet {
 			System.out.println("starting Testing");
 			ms.deleteUsers();
 			gs.removeGroups();
+			mgs.removeAllMessages();
+			mcs.removeAllMessageChats();
 			User user = new User("Rachel", "Antion", "rantion");
 			User user1 = new User("Luis", "Heinecke", "lheinecke");
 			User user2 = new User("Daniel", "Morroquin", "dmorroquin");
@@ -125,48 +125,61 @@ public class ServletMain extends HttpServlet {
 			ms.addUser(user2);
 			ms.addUser(user4);
 			
-			user.setMessageChats(new HashSet<MessageChat>());
+			//user.setMessageChats(new HashSet<MessageChat>());
 			
-			System.out.println(mcs.getMessageChats());
+//			System.out.println(mcs.getMessageChats());
 			
 			mcs.startMessageChat(user, "Yooooo does this work?", user1, user2, user3);
 			
 			System.out.println(mcs.getMessageChats());
-//			System.out.println(user.getMessages());
-		}
+			
+			System.out.println("rantion: "+ms.getUser("rantion").getMessages());
+			System.out.println("luis: "+ms.getUser("lheinecke").getMessages());
+		
+			Set<MessageChat>  messages = ms.getUser("rantion").getMessages();
+			MessageChat messageChat = null;
+			for(MessageChat messagechat : messages){
+				messageChat = messagechat;
+			}
+			Message mess = new  Message(user1, "UMM SOMETIMES IT DOES");
+			mess.setMessageChat(messageChat);
+			mgs.addMessage(mess);
+			mcs.addMessageToMessageChat(messageChat, mess);
+			
+			System.out.println("rantion: "+ms.getUser("rantion").getMessages());
+			System.out.println("luis: "+ms.getUser("lheinecke").getMessages());
 
-			// gs.startFollowing(user, user2);
-			// gs.startFollowing(user1, user2);
-			// gs.startFollowing(user3, user2);
-			// gs.startFollowing(user4, user2);
-			// List<Group> groups = gs.getGroups();
-			// for(Group grou: groups){
-			// System.out.println(grou);
-			// }
-			//
-			// Group group = gs.getGroup(user2,
-			// user2.getUserName()+"FOLLOWERS");
-			// Set<User> members = group.getMembers();
-			// System.out.println(members);
-			//
-			// Group group1 = gs.getGroup(user, user.getUserName()+"FOLLOWING");
-			// Set<User> memberss = group1.getMembers();
-			// System.out.println(memberss);
-			// user.getGroups();
-			//
-			// System.out.println("\n unfollowing");
-			//
-			// gs.unfollow(user, user2);
-			// Group group_ = gs.getGroup(user2,
-			// user2.getUserName()+"FOLLOWERS");
-			// Set<User> members_ = group_.getMembers();
-			// System.out.println(members_);
-			//
-			// Group group11 = gs.getGroup(user,
-			// user.getUserName()+"FOLLOWING");
-			// Set<User> member1ss = group11.getMembers();
-			// System.out.println(member1ss);
-			// user.getGroups();
+//			 gs.startFollowing(user, user2);
+//			 gs.startFollowing(user1, user2);
+//			 gs.startFollowing(user3, user2);
+//			 gs.startFollowing(user4, user2);
+//			 List<Group> groups = gs.getGroups();
+//			 for(Group grou: groups){
+//			 System.out.println(grou);
+//			 }
+			
+//			 Group group = gs.getGroup(user2,
+//			 user2.getUserName()+"FOLLOWERS");
+//			 Set<User> members = group.getMembers();
+//			 System.out.println(user2.getUserName()+" Groups: "+user2.getGroups());
+//			
+//			 Group group1 = gs.getGroup(user, user.getUserName()+"FOLLOWING");
+//			 Set<User> memberss = group1.getMembers();
+//			 System.out.println("rantion Groups: "+user.getGroups());
+			
+//			 System.out.println("\n unfollowing");
+			
+//			 gs.unfollow(user, user2);
+//			 Group group_ = gs.getGroup(user2,
+//			 user2.getUserName()+"FOLLOWERS");
+//			 Set<User> members_ = group_.getMembers();
+//			 System.out.println(members_);
+//			
+//			 Group group11 = gs.getGroup(user,
+//			 user.getUserName()+"FOLLOWING");
+//			 Set<User> member1ss = group11.getMembers();
+//			 System.out.println(member1ss);
+//			 user.getGroups();
 
 			// gs.createNewGroup(user,"coolKids",user1, user2, user3);
 			// Group group =gs.getGroup(user, "coolKids");
@@ -188,6 +201,7 @@ public class ServletMain extends HttpServlet {
 //			List<Post> posts = ps.getPostsOnPost(post);
 //			for (Post pos : posts) {
 //				System.out.println(pos);
+		}
 		}
 //		else if( (page.equals("auth") && userName.equals("")) )
 //		{
