@@ -10,7 +10,7 @@
 		<link href="bootstrap-3.1.1-dist/bootstrap-3.1.1-dist/css/bootstrap-modal.css" rel="stylesheet">
 
 		<link href="bootstrap-3.1.1-dist/bootstrap-3.1.1-dist/css/bootstrap.min.css" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="styles.css">
+		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/style/styles.css">
 	</head>
 	
 	<body>

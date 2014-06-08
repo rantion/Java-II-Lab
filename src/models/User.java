@@ -3,7 +3,6 @@ package models;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -36,7 +35,7 @@ public class User {
 	
 	@Column(name = "password")
 	private String password;
-	
+
 	@Column(name = "firstName")
 	private String firstName;
 
@@ -58,10 +57,7 @@ public class User {
 	inverseJoinColumns=@JoinColumn(name="post_id"))
 	private Set<Post> posts = new HashSet<Post>();	
 	
-	@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.ALL})
-	@JoinTable(name="user_messageChat", 
-	joinColumns=@JoinColumn(name="user_id"),
-	inverseJoinColumns=@JoinColumn(name="messagechat_id"))
+	@ManyToMany(mappedBy="chatUsers", fetch = FetchType.EAGER)
 	private Set<MessageChat> messageChats;
 	
 	private Group followers;
@@ -119,7 +115,7 @@ public class User {
 		user.addFollower(this);
 	}
 
-	public String getUserName() {
+	public String getUserName(){ 
 		return userName;
 	}
 
@@ -181,6 +177,15 @@ public class User {
 	public void commentOnComment(Comment comment, Comment reply) {
 
 	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		PasswordEncoder pe = new PasswordEncoder();
+		this.password = pe.encode(password);
+	}
 
 	public Set<Group> getGroups(){
 		return groups;
@@ -224,16 +229,5 @@ public class User {
 	@Override
 	public boolean equals(Object obj) {
 		return (this.toString().equalsIgnoreCase(obj.toString()));		
-		
-		
-
 	}
-
-	public void setPassword(String string) {
-		PasswordEncoder pe = new PasswordEncoder();
-		this.password = pe.encode(string);
-	}
-	
-
-
 }

@@ -17,8 +17,10 @@
 
 		<properties>
 			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)" />
-			<property name="openjpa.Log" value="SQL=TRACE" />
-			<property name="openjpa.ConnectionFactoryProperties" value="PrintParameters=true" />
+	<!-- 		<property name="openjpa.Log" value="SQL=TRACE" />
+			<property name="openjpa.ConnectionFactoryProperties" value="PrintParameters=true" /> -->
+			<property name="openjpa.RuntimeUnenhancedClasses" value="unsupported" />
+ 			<property name="openjpa.DynamicEnhancementAgent" value="false" />
 		</properties>
 	</persistence-unit>
 </persistence>

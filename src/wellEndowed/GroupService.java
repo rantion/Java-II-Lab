@@ -86,14 +86,14 @@ public class GroupService {
 		Group group = getGroup(following, following.getUserName() + "FOLLOWERS");
 		Group group1 = getGroup(user, user.getUserName() + "FOLLOWING");
 		if (group == null) {
-			System.out.println("creating "+following.getId()+" "+following.getUserName()+"FOLLOWERS");
+//			System.out.println("creating "+following.getId()+" "+following.getUserName()+"FOLLOWERS");
 			createNewGroup(following, following.getUserName() + "FOLLOWERS",
 					user);
 		} else {
 			addMemberToGroup(group, user);
 		}
 		if (group1 == null) {
-			System.out.println("creating "+user.getId()+" "+user.getUserName()+"FOLLOWING");
+//			System.out.println("creating "+user.getId()+" "+user.getUserName()+"FOLLOWING");
 			createNewGroup(user, user.getUserName() + "FOLLOWING", following);
 		} else {
 			addMemberToGroup(group1, following);

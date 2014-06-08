@@ -27,5 +27,4 @@ public class RequestInjectingServletRequestListener implements
 	public HttpServletRequest getInstance() {
 		return requestHolder.get();
 	}
-
 }

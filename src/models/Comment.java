@@ -46,6 +46,10 @@ public class Comment
 	@Column(name = "postTime")
 	private Calendar postTime;
 	
+	public Comment(){
+		
+	}
+	
 	public Comment(User creator, Post post, String content)
 	{
 		this.creator = creator;

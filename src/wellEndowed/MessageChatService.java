@@ -1,11 +1,9 @@
 package wellEndowed;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -14,6 +12,7 @@ import models.MessageChat;
 import models.User;
 
 @Stateless
+@LocalBean
 public class MessageChatService {
 	
 	@PersistenceContext(name="reactionDistractionUnit")
@@ -35,23 +34,43 @@ public class MessageChatService {
 		return em.createQuery("Select i FROM MessageChat i").getResultList();
 	}
 	
+	public void removeAllMessageChats(){
+		List<MessageChat> messageChats = getMessageChats();
+		for(MessageChat messagechat : messageChats){
+			em.remove(messagechat);
+		}
+	}
+	
 	public void startMessageChat(User messageStarter,String messageContent, User...members) {
-		List<User> users = new ArrayList<User>();
+		MessageChat messageChat = new MessageChat();
 		for(User user: members){
 			user = em.merge(user);
-			users.add(user);
+			messageChat.addChatUser(user);
+			user.addMessageChat(messageChat);
 		}
-		users.add(em.merge(messageStarter));
-		MessageChat messageChat = new MessageChat(users);
+		messageStarter = em.merge(messageStarter);
+		
+		messageChat.addChatUser(messageStarter);
+		messageStarter.addMessageChat(messageChat);
+		
 		Message message = new Message(messageStarter, messageContent);
-		em.persist(message);	
+		message.setMessageChat(messageChat);
 		messageChat.addMessage(message);
-		messageChat.setChatUsers(users);
 		em.persist(messageChat);
+<<<<<<< HEAD
 		for(User _user: users){
 			_user.addMessageChat(messageChat);
 		}
 	} 
+=======
+		
+	}
+	
+	public void addMessageToMessageChat(MessageChat messagechat, Message message){
+		messagechat.addMessage(message);
+		em.persist(em.merge(messagechat));
+	}
+>>>>>>> FETCH_HEAD
 
 
 }
