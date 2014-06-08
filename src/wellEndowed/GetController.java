@@ -14,6 +14,12 @@ public class GetController {
 	@Inject private HttpServletRequest request;
 	private Group members = ServiceLoader.members;
 	
+	public ModelAndView styleSheet()
+	{
+		ModelAndView ss = new ModelAndView(null, "/styles.css");
+		return ss;
+	}
+	
 	public ModelAndView newsfeed(){
 		ModelAndView nf = new ModelAndView(null, "/newsFeed.jsp");
 		return nf;

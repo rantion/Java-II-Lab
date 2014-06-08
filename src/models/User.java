@@ -3,7 +3,6 @@ package models;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -230,8 +229,5 @@ public class User {
 	@Override
 	public boolean equals(Object obj) {
 		return (this.toString().equalsIgnoreCase(obj.toString()));		
-		
-		
-
 	}
 }

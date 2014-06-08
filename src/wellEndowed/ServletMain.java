@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import models.Message;
 import models.MessageChat;
+import models.Role;
 import models.User;
+import models.UserRole;
 
 /**
  * Servlet implementation class ServletMain
@@ -201,29 +203,30 @@ public class ServletMain extends HttpServlet {
 //			List<Post> posts = ps.getPostsOnPost(post);
 //			for (Post pos : posts) {
 //				System.out.println(pos);
-		}
-		}
-//		else if( (page.equals("auth") && userName.equals("")) )
-//		{
-//			try {
-//				Thread.sleep(500);
-//			} catch (InterruptedException e) {
-//			                                           	// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			ms.deleteUsers();
-//			User user = new User("Luis", "asdf", "react");
-//			user.setPassword("asdf1234");
-//			
-//			user.addRole(Role.user);
-//			
-//			ms.addUser(user);
-//			
-//			for(UserRole ur : user.getRoles())
-//			{
-//				System.out.println(ur);
-//			}
 //		}
+		}
+		else if( (page.equals("auth") && userName.equals("")) )
+		{
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			ms.deleteUsers();
+			User user = new User("Luis", "asdf", "react");
+			user.setPassword("asdf1234");
+			
+			user.addRole(Role.user);
+			
+			ms.addUser(user);
+			
+			for(UserRole ur : user.getRoles())
+			{
+				System.out.println(ur);
+				System.out.println(ms.getUser("react").getPassword());
+			}
+		}
+	}
 
 
 	/**
