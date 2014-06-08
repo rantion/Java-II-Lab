@@ -51,7 +51,7 @@ public class MessageChatService {
 		for(User _user: users){
 			_user.addMessageChat(messageChat);
 		}
-	}
+	} 
 
 
 }

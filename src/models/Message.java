@@ -27,7 +27,7 @@ public class Message{
 	private User sender; 
 	
 	@ManyToOne
-	@JoinColumn(name="messageChat_id")
+	@JoinColumn(name="messagechat_id")
 	private MessageChat messageChat;
 	
 //	@Column(name = "dateSent")
